@@ -1,0 +1,64 @@
+def vJavaLang = '1.8'
+
+buildscript {
+    ext {
+        springBootVersion = '2.0.0.M2'
+        springVersion = '4.2.7.RELEASE'
+    }
+    repositories {
+        mavenLocal()
+        jcenter()
+        //maven { url 'http://nexus.tuniu.org/nexus/content/groups/public/' }
+    }
+    dependencies {
+        //classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+    }
+}
+
+
+configure(allprojects) {
+    apply plugin: 'eclipse'
+    apply plugin: 'idea'
+
+    version = '1.1.2'
+
+    idea.module {
+        excludeDirs += [
+                file('bin'),      // containing build artifacts from Eclipse (if any)
+                file('work'),     // containing transient artifacts used by embedded Tomcat
+                file('logs'),     // containing app logs written by embedded Tomcat
+                file('data'),     // containing logs and data written by elasticsearch
+                file('.settings') // containing intentionally checked-in Eclipse metadata
+        ]
+    }
+}
+
+apply plugin: 'java'
+
+
+dependencies {
+
+    dependencies { compile fileTree(dir:'lib',include:['*.jar'])}
+
+    //compile "org.springframework.boot:spring-boot-starter:${springBootVersion}"
+    //compile("org.springframework.boot:spring-boot-starter-web:${springBootVersion}")
+    compile "org.springframework:spring-web:${springVersion}"
+    compile "org.springframework:spring-webmvc:${springVersion}"
+    compile "org.springframework:spring-context:${springVersion}"
+    compile 'com.google.protobuf:protobuf-java:2.6.1'
+    compile 'com.googlecode.protobuf-java-format:protobuf-java-format:1.2'
+    compile group: 'com.google.guava', name: 'guava', version: '22.0'
+    compile group: 'commons-beanutils', name: 'commons-beanutils', version: '1.9.3'
+
+    compile group: 'com.lmax', name: 'disruptor', version: '3.3.6'
+
+
+    // optional dependencies below
+    compile 'org.apache.tomcat.embed:tomcat-embed-core:8.0.20'
+}
+
+repositories {
+    mavenLocal()
+    jcenter()
+}
+
